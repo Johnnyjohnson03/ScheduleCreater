@@ -1,7 +1,60 @@
-  ````// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
-$(function () {
+  // Set the date at the top of the page
+  $('#currentDay').text(moment().format("dddd, MMMM Do"));
+
+  // Set the status pf each time-block
+  $(".time-block").each(function() {
+      var currentTime = moment().hours();
+      var timeBlock = parseInt($(this).attr("id").split("-")[1]);
+      if (timeBlock < currentTime) {
+        $(this).addClass("past");
+      } else if (timeBlock === currentTime) {
+        $(this).addClass("present");
+      } else {
+        $(this).addClass("future");
+      } 
+  });
+
+  // Load any saved date from localStorage
+  $(".description").each(function() {
+    var timeBlock = $(this).parent().attr("id");
+    var savedData = localStarage.getItem(timeBlock);
+    if (savedData) {
+      $(this).val(savedData);
+    }
+  });
+
+  // Save the data to localStorage on click
+  $(".saveBtn").on("click", function() {
+    var timeBlock = $(this).parent().attr("id");
+    var description = $(this).siblings(".description").val();
+    localStorage.setItem(timeBlock, description);
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
@@ -20,4 +73,4 @@ $(function () {
   // attribute of each time-block be used to do this?
   //
   // TODO: Add code to display the current date in the header of the page.
-});
+
